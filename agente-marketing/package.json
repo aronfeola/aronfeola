@@ -1,0 +1,8 @@
+{
+  "name": "socio-3d-agente-marketing",
+  "private": true,
+  "description": "Generador de anuncios (render_anuncio.js). Se instala con: npm install",
+  "dependencies": {
+    "playwright": "1.63.0"
+  }
+}

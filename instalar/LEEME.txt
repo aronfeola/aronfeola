@@ -1,0 +1,58 @@
+﻿INSTALAR EL SOCIO DE NEGOCIOS 3D EN TU PC
+==========================================
+
+Que es esto
+-----------
+Tu asistente de negocios (el que lleva tus objetivos, el plan, el agente de
+marketing con el metodo de Charley T, el generador de posteos y la biblioteca de
+estilos) funcionando en tu propia computadora, con todos tus archivos en una carpeta.
+
+
+Instalar (5 minutos)
+--------------------
+1. Descomprimi este ZIP (clic derecho > Extraer todo). No lo ejecutes desde adentro del ZIP.
+2. Hace doble clic en INSTALAR.bat
+   - Si Windows dice "Windows protegio su PC": clic en "Mas informacion" > "Ejecutar de todas formas".
+   - Te va a pedir permisos de administrador (para instalar Git, Python y Node): aceptalos.
+   - Se puede abrir una ventana para iniciar sesion en GitHub: inicia sesion con tu cuenta.
+3. Espera hasta que diga LISTO. Te abre una imagen de prueba: si la ves, todo funciona.
+
+Que instala: Git, Python 3.12, Node.js, el navegador Chromium (solo para generar imagenes),
+Claude Code, y baja tu carpeta a  Documentos\Socio3D.
+
+Necesitas: Windows 10 o 11, internet, y una cuenta de Claude con plan Pro, Max o Team
+(Claude Code no funciona con el plan gratis).
+
+
+Usarlo todos los dias
+---------------------
+En el Escritorio quedan estos accesos:
+
+  Claude - Socio 3D       Abre al asistente en tu carpeta. Primera vez: te pide iniciar
+                          sesion en el navegador. Despues escribile, por ejemplo:
+                            "Vendi 3 llaveros a $X"        -> lo anota y actualiza la meta
+                            "Hoy contacte a 8 personas"    -> actualiza el avance
+                            "Hace un anuncio tipo tweet para el llavero"  (con las fotos)
+                            "Analiza este anuncio y guardalo como estilo oro"
+  Editor de posteos       Armas un posteo a mano y lo descargas en PNG.
+  Cotizador 3D            Calcula el precio de una impresion y arma el presupuesto.
+  Guardar y sincronizar   Sube tus cambios a GitHub. Hacelo al terminar el dia: asi el
+                          recordatorio de las 7:47 sabe en que estas.
+  Carpeta Socio 3D        Todos tus archivos.
+
+
+Si algo falla
+-------------
+- Abri el archivo  Documentos\instalacion-socio3d.txt  y mandaselo a Claude,
+  o saca una captura de la ventana negra.
+- Podes ejecutar INSTALAR.bat de nuevo: lo que ya esta instalado se saltea.
+- "winget no se encuentra": en la Microsoft Store actualiza "Instalador de aplicacion".
+- Si no se abre una ventana de GitHub y falla la descarga: instala "GitHub Desktop"
+  (desktop.github.com), inicia sesion con tu cuenta, y volve a ejecutar INSTALAR.bat.
+
+
+Ponerlo en otra computadora (la oficina)
+----------------------------------------
+Repeti los mismos pasos en esa PC: es el mismo ZIP. Cada PC baja la ultima version de tu carpeta.
+Para no pisarte: al terminar de trabajar en una PC usa "Guardar y sincronizar", y antes de empezar
+en la otra tambien (trae lo ultimo).
