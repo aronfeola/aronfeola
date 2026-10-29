@@ -27,6 +27,8 @@ cada vez que Claude aprende algo de cómo hago las cosas, lo agrega acá.
   - que ponga objetivos semanales y me mande recordatorios
 - **Recordatorios:** todos los días hábiles a la mañana. Los lunes con los objetivos de
   la semana; los viernes con la revisión.
+- **Fotos de los anuncios:** siempre las paso yo cuando pido un anuncio. Claude no tiene que inventar
+  ni generar fotos de producto; si falta una, la pide.
 - **Herramientas:** trabajo en una PC con Windows. Ya tengo un agente de marketing para
   Meta Ads basado en Charley T (`agente-marketing/`).
 

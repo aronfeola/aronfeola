@@ -100,7 +100,8 @@ variantes del mismo estilo: quedate con lo que tienen en común y anotá lo que 
    estilos guardados (carpetas de `estilos/` sin guion bajo) y preguntá cuál.
 2. **Juntá el contenido:** el texto de cada hueco y la foto. Lo que no te dé, proponelo vos:
    texto según "Cómo se escribe" del estilo + `../negocio/` + `conocimiento/charley-t/estaticos.md`.
-   Pedí la foto si no la tenés. Si falta un dato (precio, plazo, mínimo), preguntalo: no lo inventes.
+   Pedí la foto si no la tenés: el dueño siempre pasa las suyas, y nunca generes ni inventes
+   fotos de producto para un anuncio real. Si falta un dato (precio, plazo, mínimo), preguntalo: no lo inventes.
 3. **Generá:** escribí `anuncios/AAAA-MM-DD-<x>-<tema>.json` y corré
    `node scripts/render_anuncio.js <x> anuncios/<ese>.json anuncios/<ese>.png`
    (con `--ratio 1:1` o `--ratio 9:16` si pidió otro formato).
