@@ -4,6 +4,8 @@ Complementa `top-50-aprendizaje.md` (tanda 1) sin repetir ninguno. Mismo criteri
 un escalón más abajo: más estrategias para copiar, auditorías en vivo y casos reales.
 Va en un segundo cuaderno de NotebookLM.
 
+**Estado:** los 50 resumidos en `resumenes/tanda-2.md`.
+
 ## Cursos y estrategia general
 
 Cursos largos y visión de conjunto que complementan los fundamentos de la tanda 1.
