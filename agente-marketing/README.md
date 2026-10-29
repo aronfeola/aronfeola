@@ -41,7 +41,7 @@ Lee `CLAUDE.md` solo, y puede leer y **actualizar** los archivos por vos.
    `resultados/registro-anuncios.md`, o pegale las métricas al agente y pedile que
    escriba la fila. Esto es lo que más lo mejora con el tiempo.
 3. **Los videos de Charley T.**
-   - En tu compu: `pip install youtube-transcript-api` y
+   - En tu compu: `pip install --upgrade youtube-transcript-api` y
      `python scripts/descargar_transcripciones.py` → se llena `transcripciones/`.
    - Después, en Claude Code: *"Resumí las transcripciones que no tengan resumen usando
      `resumenes/_plantilla.md`, marcalas con ✅ en `videos-ultimos-100.md` y actualizá
