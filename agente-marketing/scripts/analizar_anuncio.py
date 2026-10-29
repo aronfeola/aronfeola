@@ -98,9 +98,20 @@ def analizar(ruta):
         "paleta": paleta, "elementos": [], "margenes_pct": None,
     }
 
+    # Fondo que cambia suavemente de arriba hacia abajo (viñeteado, degradado, foto de una pantalla):
+    # se modela con el color de los bordes de cada fila, y sirve igual para separar elementos.
+    fondo_mapa = fondo if tipo_fondo == "sólido" else None
+    if fondo_mapa is None:
+        bm = max(2, round(0.012 * w))
+        lados = np.concatenate([a[:, :bm], a[:, -bm:]], axis=1)
+        por_fila = np.median(lados, axis=1)
+        if np.abs(lados - por_fila[:, None, :]).max(axis=2).mean() < 12:
+            fondo_mapa = por_fila[:, None, :]
+            res["fondo"]["tipo"] = tipo_fondo = "degradado vertical (se mide por fila)"
+
     elementos = []
-    if tipo_fondo == "sólido":
-        mask = np.abs(a - fondo).max(axis=2) > 40
+    if fondo_mapa is not None:
+        mask = np.abs(a - fondo_mapa).max(axis=2) > 40
         filas = mask.sum(axis=1) >= 2
         for (y0, y1) in tramos(filas, max(1, round(0.004 * h))):
             cols = mask[y0:y1 + 1].any(axis=0)

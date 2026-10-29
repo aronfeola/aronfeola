@@ -1,0 +1,18 @@
+{
+  "nombre": "tweet",
+  "descripcion": "Posteo estilo tweet sobre fondo crema: título arriba, una o dos fotos con esquinas redondeadas, perfil (foto, nombre, usuario) y un texto corto con emojis. Pegado de capturas de redes.",
+  "referencia": "referencia.png",
+  "lienzo": { "ancho": 1080, "alto": 1350, "relacion": "4:5" },
+  "colores": { "fondo": "#ecead4", "texto": "#0f0f0c", "apagado": "#66655a", "avatar_vacio": "#d9dccb" },
+  "tipografia": {
+    "titulo": { "familia": "Inter", "peso": 400, "tamano_px": 44, "interlineado": 1.2, "alineacion": "izquierda" },
+    "nombre": { "familia": "Inter", "peso": 700, "tamano_px": 38 },
+    "usuario": { "familia": "Inter", "peso": 400, "tamano_px": 36, "color": "apagado" },
+    "texto": { "familia": "Inter", "peso": 500, "tamano_px": 44, "interlineado": 1.25 },
+    "leyenda_sobre_foto": { "familia": "Inter", "peso": 800, "tamano_px": 42, "color": "#ffffff", "contorno": "9px negro 82%" }
+  },
+  "margenes_px": { "izquierda": 24, "derecha": 24, "arriba": 76, "abajo": 64 },
+  "fotos": { "esquinas_px": 22, "separacion_px": 13, "cantidad": "1 o 2", "borde": null, "sombra": null },
+  "elementos": ["título (hasta 2 líneas)", "1 o 2 fotos", "leyenda sobre la foto (opcional)", "foto de perfil + nombre + usuario", "texto de abajo con emojis"],
+  "texto_en_la_imagen": { "largo_titulo": "una frase de 4 a 8 palabras", "tono": "casual, de red social, en broma", "idioma": "es-AR", "emojis": "sí, en el texto de abajo (3 repetidos) y en la leyenda" }
+}

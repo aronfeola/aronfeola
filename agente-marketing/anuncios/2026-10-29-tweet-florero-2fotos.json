@@ -1,0 +1,13 @@
+{
+  "textos": {
+    "titulo": "Así se ve un florero impreso en 3D",
+    "nombre": "Tu Marca 3D",
+    "usuario": "@tumarca3d",
+    "texto": "¿$9.500?? Se lo regalo a toda la familia 😆😆😆"
+  },
+  "fotos": {
+    "foto1": "estilos/tweet/ejemplo/ej-florero.jpg",
+    "foto2": "estilos/tweet/ejemplo/ej-set.jpg",
+    "avatar": "estilos/tweet/ejemplo/avatar-ejemplo.png"
+  }
+}

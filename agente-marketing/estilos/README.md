@@ -59,6 +59,7 @@ estilos/
 
 | Nombre | Qué es | Tamaño | Referencia |
 |---|---|---|---|
+| `tweet` | Posteo estilo captura de red social: fondo crema, título, 1 o 2 fotos redondeadas, perfil y texto en broma con emojis. Sacado del video que mandó el dueño. | 4:5 (también 1:1 y 9:16) | `tweet/referencia.png` |
 | `_ejemplo` | **De prueba, con un anuncio inventado.** Sirve para ver cómo queda un estilo terminado (titular amarillo condensado, foto redondeada, sello y botón). | 4:5 (también 1:1 y 9:16) | `_ejemplo/referencia.png` |
 
 *(Claude agrega una fila acá cada vez que guarda un estilo nuevo.)*

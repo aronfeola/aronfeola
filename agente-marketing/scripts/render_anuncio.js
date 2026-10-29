@@ -13,7 +13,8 @@
  *   }
  *
  * En la plantilla.html: data-texto="titular" (texto), data-foto="producto" (imagen),
- * data-opcional (se saca si no hay contenido), data-fit (achica la letra hasta que entre).
+ * data-opcional (se saca si no hay contenido), data-conserva (queda lo de la plantilla, sin aviso),
+ * data-fit (achica la letra hasta que entre).
  * <body data-ratio> vale 4x5, 1x1, 9x16 u otro, para reglas de CSS por proporción.
  * En los textos: salto de línea con \n y **palabra** para resaltar.
  *
@@ -87,10 +88,12 @@ function cargarPlaywright() {
     for (const el of document.querySelectorAll('[data-texto]')) {
       const k = el.dataset.texto;
       if (textos[k] !== undefined && textos[k] !== '') {
-        el.innerHTML = esc(String(textos[k])).replace(/\*\*(.+?)\*\*/g, '<strong class="resaltado">$1</strong>').replace(/\n/g, '<br>');
+        // Los emojis seguidos no se parten en dos líneas.
+        const sinCortar = (t) => t.replace(/((?:\p{Extended_Pictographic}[\uFE0F\u200D]*)+)/gu, '<span style="white-space:nowrap">$1</span>');
+        el.innerHTML = sinCortar(esc(String(textos[k])).replace(/\*\*(.+?)\*\*/g, '<strong class="resaltado">$1</strong>')).replace(/\n/g, '<br>');
       } else if (el.hasAttribute('data-opcional')) {
         el.remove();
-      } else {
+      } else if (!el.hasAttribute('data-conserva')) {
         avisos.push(`No cambié el texto "${k}" (no está en el contenido): quedó el de la plantilla.`);
       }
     }
@@ -100,7 +103,7 @@ function cargarPlaywright() {
         if (el.tagName === 'IMG') el.src = fotos[k]; else el.style.backgroundImage = `url("${fotos[k]}")`;
       } else if (el.hasAttribute('data-opcional')) {
         el.remove();
-      } else {
+      } else if (!el.hasAttribute('data-conserva')) {
         avisos.push(`No cambié la foto "${k}" (no está en el contenido): quedó la de la plantilla.`);
       }
     }

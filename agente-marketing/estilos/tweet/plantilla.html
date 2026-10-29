@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Estilo tweet</title>
+<style>
+  @font-face { font-family: 'Inter'; font-weight: 400; font-style: normal; src: url('../_fuentes/Inter-400.ttf'); }
+  @font-face { font-family: 'Inter'; font-weight: 500; font-style: normal; src: url('../_fuentes/Inter-500.ttf'); }
+  @font-face { font-family: 'Inter'; font-weight: 700; font-style: normal; src: url('../_fuentes/Inter-700.ttf'); }
+  @font-face { font-family: 'Inter'; font-weight: 800; font-style: normal; src: url('../_fuentes/Inter-800.ttf'); }
+
+  :root {
+    --w: 1080px; --h: 1350px;
+    --color-fondo: #ecead4;
+    --color-texto: #0f0f0c;
+    --color-apagado: #77766a;       /* usuario (@...) */
+    --color-avatar: #d9dccb;        /* círculo de perfil cuando no hay foto */
+    --fuente: 'Inter', system-ui, sans-serif;
+    --margen: 19px;
+    --radio-foto: 22px;
+    --peso-titulo: 400;
+    --peso-texto: 500;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--color-fondo); }
+
+  /* Columna: todo con alto fijo menos las fotos, que se estiran. Sirve en 4:5, 1:1 y 9:16. */
+  #lienzo {
+    position: relative; width: var(--w); height: var(--h); padding: 78px var(--margen) 28px;
+    display: flex; flex-direction: column; font-family: var(--fuente); color: var(--color-texto);
+  }
+
+  /* Título: hasta 2 líneas, pegado abajo del recuadro (con 1 línea queda cerca de las fotos). */
+  .titulo-caja { flex: none; height: 106px; margin-bottom: 61px; display: flex; align-items: flex-end; }
+  [data-texto="titulo"] { width: 100%; font: var(--peso-titulo) 42px/1.2 var(--fuente); }
+
+  /* Fotos: una (ancho completo) o dos lado a lado. */
+  .fotos { position: relative; flex: 1; min-height: 240px; display: flex; gap: 13px; }
+  [data-foto="foto1"], [data-foto="foto2"] {
+    flex: 1; min-width: 0; border-radius: var(--radio-foto);
+    background: #777 center / cover no-repeat;
+  }
+  /* Texto sobre la foto (estilo subtítulo de video): blanco, grueso, con contorno oscuro. */
+  [data-texto="leyenda"] {
+    position: absolute; left: 6%; right: 6%; bottom: 34px; text-align: center;
+    font: 800 42px/1.15 var(--fuente); color: #fff;
+    -webkit-text-stroke: 9px rgba(0, 0, 0, .82); paint-order: stroke fill;
+  }
+
+  /* Perfil */
+  .autor { flex: none; height: 115px; margin-top: 59px; display: flex; align-items: center; gap: 21px; }
+  [data-foto="avatar"] {
+    flex: none; width: 115px; height: 115px; border-radius: 50%;
+    background: var(--color-avatar) center / cover no-repeat;
+  }
+  .nombres { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  [data-texto="nombre"] { font: 700 38px/1.15 var(--fuente); white-space: nowrap; }
+  [data-texto="usuario"] { font: 400 38px/1.15 var(--fuente); color: var(--color-apagado); white-space: nowrap; }
+
+  /* Texto de abajo */
+  .cuerpo-caja { flex: none; height: 112px; margin-top: 60px; }
+  [data-texto="texto"] { width: 100%; height: 100%; overflow: hidden; font: var(--peso-texto) 42px/1.25 var(--fuente); }
+
+  .resaltado { font-weight: 700; }
+
+  body[data-ratio="1x1"] .titulo-caja { margin-bottom: 36px; }
+  body[data-ratio="1x1"] .autor { margin-top: 40px; }
+</style>
+</head>
+<body>
+  <div id="lienzo">
+    <div class="titulo-caja"><div data-texto="titulo" data-fit>Así se ve un florero impreso en 3D</div></div>
+    <div class="fotos">
+      <div data-foto="foto1"></div>
+      <div data-foto="foto2" data-opcional></div>
+      <div data-texto="leyenda" data-opcional>Impreso en 14 horas 😍</div>
+    </div>
+    <div class="autor">
+      <div data-foto="avatar" data-conserva></div>
+      <div class="nombres">
+        <div data-texto="nombre">Tu Marca 3D</div>
+        <div data-texto="usuario">@tumarca3d</div>
+      </div>
+    </div>
+    <div class="cuerpo-caja"><div data-texto="texto" data-fit>¿Esto sale de una impresora?? 😆😆😆</div></div>
+  </div>
+</body>
+</html>

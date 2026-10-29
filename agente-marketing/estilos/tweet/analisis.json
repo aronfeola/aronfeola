@@ -1,0 +1,52 @@
+{
+  "archivo": "referencia.png",
+  "ancho": 1080,
+  "alto": 1290,
+  "relacion": "0.837",
+  "fondo": {
+    "tipo": "degradado",
+    "color": "#e9e6d0",
+    "esquinas": {
+      "arriba_izq": "#e9e3cf",
+      "arriba_der": "#e8e7cb",
+      "abajo_izq": "#d5d0c7",
+      "abajo_der": "#d5d5c7"
+    }
+  },
+  "paleta": [
+    {
+      "color": "#e6e1cf",
+      "pct": 19.3
+    },
+    {
+      "color": "#ecead2",
+      "pct": 15.3
+    },
+    {
+      "color": "#534039",
+      "pct": 15.1
+    },
+    {
+      "color": "#d87e54",
+      "pct": 12.7
+    },
+    {
+      "color": "#796759",
+      "pct": 12.6
+    },
+    {
+      "color": "#332a27",
+      "pct": 11.1
+    },
+    {
+      "color": "#f2f1df",
+      "pct": 10.0
+    },
+    {
+      "color": "#dbc9ae",
+      "pct": 3.9
+    }
+  ],
+  "elementos": [],
+  "margenes_pct": null
+}
