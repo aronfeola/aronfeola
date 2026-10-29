@@ -16,6 +16,12 @@ agente-marketing/         ← agente de posteos estáticos para Meta Ads (métod
 resultados/               ← resultados de anuncios
 ```
 
+## Instalarlo en una PC con Windows
+
+Bajá `instalar-socio-3d.zip`, descomprimilo y hacé doble clic en `INSTALAR.bat`. Instala todo, baja esta
+carpeta a `Documentos\Socio3D` y deja accesos directos en el Escritorio. Pasos y solución de problemas en
+`instalar/LEEME.txt`. Con el acceso **Guardar y sincronizar** subís tus cambios a GitHub.
+
 ## Dónde hablar con él
 
 - **Claude Code (recomendado):** abrí una sesión con este repo. Lee `CLAUDE.md` solo,
