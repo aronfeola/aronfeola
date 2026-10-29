@@ -8,6 +8,7 @@ hace a mano un par de veces, se anota el proceso, y después se automatiza.
 | Nombre | Qué hace | Cómo se usa |
 |---|---|---|
 | Cotizador | Calcula el costo real de una impresión, el precio sugerido, el precio por cantidad y arma el texto del presupuesto para WhatsApp | Abrí `cotizador.html` con doble clic. Guarda tus costos en el navegador. |
+| Editor de posteos | Arma posteos estáticos (foto + texto, reseña, texto grande) y los descarga en PNG | Abrí `agente-marketing/herramientas/editor-posteos.html` con doble clic. |
 | Recordatorio diario | Cada día hábil a las 7:47 te manda los objetivos y el avance de la meta | Automático (tarea programada en Claude). Para cambiarlo, pedíselo a Claude. |
 
 ## Ideas, en orden de prioridad

@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor de posteos</title>
+<style>
+  :root {
+    --bg: #f6f5f2; --card: #ffffff; --text: #1d1d1b; --muted: #6b6a66; --line: #e3e1db;
+    --accent: #c4511f; --accent-text: #ffffff; --input: #fbfaf8; --soft: #fbe9e1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --card: #1f1f1d; --text: #ecebe7; --muted: #a09e98; --line: #34332f;
+      --accent: #f07a45; --accent-text: #161614; --input: #262623; --soft: #3a2419;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --card: #1f1f1d; --text: #ecebe7; --muted: #a09e98; --line: #34332f;
+    --accent: #f07a45; --accent-text: #161614; --input: #262623; --soft: #3a2419;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.5rem; margin: 0 0 2px; }
+  .sub { color: var(--muted); margin: 0 0 18px; }
+  .app { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 900px) { .app { grid-template-columns: 360px minmax(0, 1fr); align-items: start; } }
+  .panel {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px;
+    display: grid; gap: 18px; order: 2;
+  }
+  @media (min-width: 900px) {
+    .panel { order: 1; position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; }
+  }
+  .stage { order: 1; display: grid; gap: 10px; justify-items: center; }
+  @media (min-width: 900px) { .stage { order: 2; position: sticky; top: 16px; } }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+  legend { font-weight: 650; font-size: .95rem; padding: 0; margin-bottom: 8px; }
+  label { display: grid; gap: 4px; font-size: .82rem; color: var(--muted); }
+  input[type=text], textarea, select {
+    font: inherit; color: var(--text); background: var(--input);
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%;
+  }
+  textarea { resize: vertical; min-height: 40px; }
+  input:focus, textarea:focus, select:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  input[type=file] { font-size: .8rem; color: var(--muted); max-width: 100%; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+  .seg button {
+    flex: 1 1 0; font: inherit; font-size: .85rem; padding: 8px 6px; cursor: pointer;
+    background: var(--input); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
+  }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 650; }
+  .colors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  input[type=color] { width: 100%; height: 38px; border: 1px solid var(--line); border-radius: 8px; padding: 2px; background: var(--input); cursor: pointer; }
+  .palettes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .palettes button {
+    display: flex; align-items: center; gap: 6px; font: inherit; font-size: .8rem; cursor: pointer;
+    background: var(--input); color: var(--text); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px 4px 4px;
+  }
+  .palettes i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(128,128,128,.4); display: block; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .photo { display: grid; gap: 4px; }
+  .photo .row { justify-content: space-between; }
+  button.small {
+    font: inherit; font-size: .75rem; padding: 3px 9px; cursor: pointer; background: transparent;
+    color: var(--muted); border: 1px solid var(--line); border-radius: 6px;
+  }
+  button.primary {
+    font: inherit; font-weight: 650; padding: 11px 16px; cursor: pointer; width: 100%;
+    background: var(--accent); color: var(--accent-text); border: 0; border-radius: 8px;
+  }
+  button.ghost {
+    font: inherit; font-size: .85rem; padding: 8px 12px; cursor: pointer; background: transparent;
+    color: var(--muted); border: 1px solid var(--line); border-radius: 8px;
+  }
+  canvas {
+    display: block; max-width: 100%; max-height: calc(100vh - 110px); width: auto; height: auto;
+    border-radius: 6px; box-shadow: 0 6px 28px rgba(0,0,0,.22); background: #fff;
+  }
+  .meta { font-size: .8rem; color: var(--muted); text-align: center; margin: 0; }
+  .tip { background: var(--soft); border-radius: 8px; padding: 8px 10px; font-size: .8rem; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Editor de posteos</h1>
+  <p class="sub">Armá un posteo estático, mirá cómo queda y descargalo en PNG, listo para subir.</p>
+
+  <div class="app">
+    <div class="panel" id="panel">
+
+      <fieldset>
+        <legend>Tipo de posteo</legend>
+        <div class="seg" data-seg="template" role="group" aria-label="Tipo de posteo">
+          <button type="button" data-v="foto">Foto + texto</button>
+          <button type="button" data-v="resena">Reseña</button>
+          <button type="button" data-v="grande">Texto grande</button>
+        </div>
+        <label>Tamaño
+          <select data-k="size">
+            <option value="4:5">4:5 · 1080 × 1350 (feed, el recomendado)</option>
+            <option value="1:1">1:1 · 1080 × 1080 (cuadrado)</option>
+            <option value="9:16">9:16 · 1080 × 1920 (historias)</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Textos</legend>
+        <label data-t="foto">Título (arriba de la foto)<textarea data-k="title" rows="2"></textarea></label>
+        <label data-t="foto">Texto sobre la foto<input type="text" data-k="caption"></label>
+        <label data-t="resena">Reseña del cliente<textarea data-k="quote" rows="4"></textarea></label>
+        <label data-t="resena">Estrellas
+          <select data-k="stars"><option value="5">5</option><option value="4">4</option><option value="3">3</option></select>
+        </label>
+        <label data-t="grande">Titular<textarea data-k="headline" rows="2"></textarea></label>
+        <label data-t="grande">Subtítulo<textarea data-k="sub" rows="2"></textarea></label>
+        <label data-t="grande">Botón (llamado a la acción)<input type="text" data-k="cta"></label>
+        <div class="two" data-t="foto resena">
+          <label>Nombre<input type="text" data-k="name"></label>
+          <label data-t="foto">Usuario<input type="text" data-k="handle"></label>
+          <label data-t="resena">Detalle<input type="text" data-k="handle"></label>
+        </div>
+        <label data-t="grande">Firma (abajo)<input type="text" data-k="handle"></label>
+        <label data-t="foto">Texto de abajo<textarea data-k="body" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Fotos</legend>
+        <div class="seg" data-seg="count" data-t="foto" role="group" aria-label="Cantidad de fotos">
+          <button type="button" data-v="1">1 foto</button>
+          <button type="button" data-v="2">2</button>
+          <button type="button" data-v="3">3</button>
+          <button type="button" data-v="4">4</button>
+        </div>
+        <div class="photo" data-slot="0"><div class="row"><label style="flex:1">Foto 1</label><button type="button" class="small" data-clear="0" hidden>Quitar</button></div><input type="file" accept="image/*" data-photo="0"></div>
+        <div class="photo" data-slot="1"><div class="row"><label style="flex:1">Foto 2</label><button type="button" class="small" data-clear="1" hidden>Quitar</button></div><input type="file" accept="image/*" data-photo="1"></div>
+        <div class="photo" data-slot="2"><div class="row"><label style="flex:1">Foto 3</label><button type="button" class="small" data-clear="2" hidden>Quitar</button></div><input type="file" accept="image/*" data-photo="2"></div>
+        <div class="photo" data-slot="3"><div class="row"><label style="flex:1">Foto 4</label><button type="button" class="small" data-clear="3" hidden>Quitar</button></div><input type="file" accept="image/*" data-photo="3"></div>
+        <p class="tip" data-t="resena grande">La foto 1 es opcional en este tipo de posteo.</p>
+        <label>Zoom de las fotos <input type="range" data-k="zoom" min="100" max="220" step="1"></label>
+        <label>Encuadre vertical (arriba ↔ abajo) <input type="range" data-k="focus" min="0" max="100" step="1"></label>
+        <label>Esquinas redondeadas <input type="range" data-k="radius" min="0" max="80" step="1"></label>
+        <div class="photo" data-t="foto resena">
+          <div class="row"><label style="flex:1">Foto de perfil (opcional)</label><button type="button" class="small" data-clear="avatar" hidden>Quitar</button></div>
+          <input type="file" accept="image/*" data-photo="avatar">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Estilo</legend>
+        <div class="palettes" id="palettes"></div>
+        <div class="colors">
+          <label>Fondo<input type="color" data-k="bg"></label>
+          <label>Texto<input type="color" data-k="text"></label>
+          <label>Acento<input type="color" data-k="accent"></label>
+        </div>
+        <label>Tipografía
+          <select data-k="font">
+            <option value="sans">Moderna (sans)</option>
+            <option value="serif">Clásica (serif)</option>
+            <option value="impact">Impacto (condensada, gruesa)</option>
+          </select>
+        </label>
+        <label>Tamaño de los textos grandes <input type="range" data-k="scaleBig" min="60" max="160" step="2"></label>
+        <label>Tamaño de los textos chicos <input type="range" data-k="scaleSmall" min="60" max="160" step="2"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Descargar</legend>
+        <label>Nombre del archivo<input type="text" data-k="fname"></label>
+        <button type="button" class="primary" id="download">Descargar PNG</button>
+        <button type="button" class="ghost" id="reset">Volver a los valores de ejemplo</button>
+      </fieldset>
+    </div>
+
+    <div class="stage">
+      <canvas id="canvas" width="1080" height="1350" aria-label="Vista previa del posteo"></canvas>
+      <p class="meta" id="meta"></p>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const canvas = $("#canvas"), ctx = canvas.getContext("2d");
+  const STORE = "editorPosteos.v1";
+
+  const SIZES = { "4:5": [1080, 1350], "1:1": [1080, 1080], "9:16": [1080, 1920] };
+  const FONTS = {
+    sans: 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    serif: 'Georgia, "Times New Roman", serif',
+    impact: 'Impact, "Arial Narrow Bold", Haettenschweiler, "Arial Black", sans-serif',
+  };
+  const PALETTES = [
+    { name: "Crema", bg: "#f4f1e8", text: "#1d1d1b", accent: "#c4511f" },
+    { name: "Blanco y negro", bg: "#ffffff", text: "#111111", accent: "#111111" },
+    { name: "Oscuro", bg: "#151515", text: "#f2f0ea", accent: "#f07a45" },
+    { name: "Naranja", bg: "#f26a21", text: "#ffffff", accent: "#111111" },
+  ];
+  const DEFAULTS = {
+    template: "foto", size: "4:5", count: 1,
+    title: "Así se ve un soporte de escritorio impreso en 3D",
+    caption: "Impreso en 12 horas 😮",
+    name: "Tu marca 3D", handle: "@tumarca3d",
+    body: "¿$8.500? Regalo 😂",
+    quote: "Lo pedí para el cumpleaños de mi papá y quedó perfecto. La terminación es impecable.",
+    stars: 5,
+    headline: "Regalos de fin de año con tu logo en 3D",
+    sub: "Muestra antes de confirmar. Entrega en 10 días hábiles.",
+    cta: "Pedí tu presupuesto",
+    bg: PALETTES[0].bg, text: PALETTES[0].text, accent: PALETTES[0].accent,
+    font: "sans", scaleBig: 100, scaleSmall: 100,
+    zoom: 100, focus: 50, radius: 28, fname: "posteo",
+  };
+
+  let S = { ...DEFAULTS };
+  try { Object.assign(S, JSON.parse(localStorage.getItem(STORE) || "{}")); } catch (e) { /* sin almacenamiento */ }
+  S.count = Number(S.count); S.stars = Number(S.stars);
+  const imgs = [null, null, null, null];
+  let avatar = null;
+
+  // ---------- utilidades de color y texto ----------
+  const hex2rgb = (h) => {
+    h = h.replace("#", "");
+    if (h.length === 3) h = [...h].map((c) => c + c).join("");
+    const n = parseInt(h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+  const rgba = (h, a) => { const [r, g, b] = hex2rgb(h); return `rgba(${r},${g},${b},${a})`; };
+  const lum = (h) => {
+    const [r, g, b] = hex2rgb(h).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const onColor = (h) => (lum(h) > 0.4 ? "#111111" : "#ffffff");
+  const font = (weight, size) => `${weight} ${size}px ${FONTS[S.font]}`;
+
+  function wrap(text, maxW) {
+    const out = [];
+    for (const para of String(text).split("\n")) {
+      const words = para.split(/\s+/).filter(Boolean);
+      if (!words.length) { out.push(""); continue; }
+      let line = "";
+      for (const w of words) {
+        const t = line ? line + " " + w : w;
+        if (ctx.measureText(t).width <= maxW) { line = t; continue; }
+        if (line) out.push(line);
+        if (ctx.measureText(w).width <= maxW) { line = w; continue; }
+        let part = "";
+        for (const ch of w) {
+          if (part && ctx.measureText(part + ch).width > maxW) { out.push(part); part = ch; } else part += ch;
+        }
+        line = part;
+      }
+      out.push(line);
+    }
+    return out;
+  }
+  function fit(text, maxW, maxH, start, min, weight, lh) {
+    for (let size = Math.round(start); size >= min; size -= 2) {
+      ctx.font = font(weight, size);
+      const lines = wrap(text, maxW);
+      if (lines.length * size * lh <= maxH) return { size, lines };
+    }
+    ctx.font = font(weight, min);
+    return { size: min, lines: wrap(text, maxW).slice(0, Math.max(1, Math.floor(maxH / (min * lh)))) };
+  }
+  function drawLines(lines, x, y, size, lh, align = "left") {
+    ctx.textAlign = align;
+    lines.forEach((l, i) => ctx.fillText(l, x, y + i * size * lh));
+  }
+
+  // ---------- formas e imágenes ----------
+  function rr(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+  function cover(img, x, y, w, h) {
+    const s = Math.max(w / img.width, h / img.height) * (S.zoom / 100);
+    const iw = img.width * s, ih = img.height * s;
+    ctx.drawImage(img, x + (w - iw) / 2, y + (h - ih) * (S.focus / 100), iw, ih);
+  }
+  function photo(i, x, y, w, h, c, label = true) {
+    ctx.save();
+    rr(x, y, w, h, S.radius);
+    ctx.clip();
+    if (imgs[i]) {
+      cover(imgs[i], x, y, w, h);
+    } else {
+      ctx.fillStyle = rgba(S.text, 0.09);
+      ctx.fillRect(x, y, w, h);
+      if (label) {
+        ctx.fillStyle = rgba(S.text, 0.4);
+        ctx.font = font("600", Math.round(Math.min(w, h) * 0.07));
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(`Foto ${i + 1}`, x + w / 2, y + h / 2);
+        ctx.textBaseline = "top";
+      }
+    }
+    ctx.restore();
+  }
+  function photoGrid(x, y, w, h, n, c) {
+    const g = 14;
+    let rects;
+    if (n === 1) rects = [[x, y, w, h]];
+    else if (n === 2) { const cw = (w - g) / 2; rects = [[x, y, cw, h], [x + cw + g, y, cw, h]]; }
+    else if (n === 3) {
+      const lw = (w - g) * 0.6, rw = w - g - lw, rh = (h - g) / 2;
+      rects = [[x, y, lw, h], [x + lw + g, y, rw, rh], [x + lw + g, y + rh + g, rw, rh]];
+    } else {
+      const cw = (w - g) / 2, rh = (h - g) / 2;
+      rects = [[x, y, cw, rh], [x + cw + g, y, cw, rh], [x, y + rh + g, cw, rh], [x + cw + g, y + rh + g, cw, rh]];
+    }
+    rects.forEach((q, i) => photo(i, q[0], q[1], q[2], q[3], c));
+  }
+  function drawAvatar(cx, cy, d, c) {
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, d / 2, 0, Math.PI * 2); ctx.clip();
+    if (avatar) {
+      const s = Math.max(d / avatar.width, d / avatar.height);
+      ctx.drawImage(avatar, cx - (avatar.width * s) / 2, cy - (avatar.height * s) / 2, avatar.width * s, avatar.height * s);
+    } else {
+      ctx.fillStyle = S.accent; ctx.fillRect(cx - d / 2, cy - d / 2, d, d);
+      ctx.fillStyle = onColor(S.accent);
+      ctx.font = font("700", Math.round(d * 0.46));
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText((S.name.trim()[0] || "•").toUpperCase(), cx, cy + 2);
+    }
+    ctx.restore();
+    ctx.textBaseline = "top";
+  }
+  function author(x, y, sm, c, subtitle = S.handle) {
+    const A = 84;
+    drawAvatar(x + A / 2, y + A / 2, A, c);
+    const tx = x + A + 22;
+    ctx.textAlign = "left";
+    ctx.fillStyle = c.text; ctx.font = font("700", Math.round(38 * sm));
+    ctx.fillText(S.name, tx, y + (subtitle.trim() ? 6 : 22));
+    if (subtitle.trim()) {
+      ctx.fillStyle = c.muted; ctx.font = font("500", Math.round(32 * sm));
+      ctx.fillText(subtitle, tx, y + 6 + Math.round(38 * sm) * 1.2);
+    }
+    return A;
+  }
+
+  // ---------- plantillas ----------
+  function tplFoto(W, H, c, big, sm) {
+    const P = Math.round(W * 0.07), innerW = W - 2 * P;
+    let y = P;
+    if (S.title.trim()) {
+      const f = fit(S.title, innerW, H * 0.2, 64 * big, 26, "700", 1.18);
+      ctx.fillStyle = c.text; ctx.font = font("700", f.size);
+      drawLines(f.lines, P, y, f.size, 1.18);
+      y += f.lines.length * f.size * 1.18 + 30;
+    }
+    const hasAuthor = S.name.trim() || S.handle.trim() || avatar;
+    const bodySize = Math.round(42 * sm);
+    let bodyLines = [];
+    if (S.body.trim()) { ctx.font = font("500", bodySize); bodyLines = wrap(S.body, innerW); }
+    const bodyH = bodyLines.length * bodySize * 1.35;
+    const footerH = (hasAuthor ? 84 + (bodyLines.length ? 22 : 0) : 0) + bodyH;
+    const photoH = Math.max(H - P - footerH - (footerH ? 32 : 0) - y, 160);
+    photoGrid(P, y, innerW, photoH, S.count, c);
+
+    if (S.caption.trim()) {
+      const cs = Math.round(46 * sm), lh = cs * 1.2;
+      ctx.font = font("800", cs);
+      const lines = wrap(S.caption, innerW * 0.8);
+      const top = y + photoH - lines.length * lh - 36;
+      ctx.textAlign = "center"; ctx.lineJoin = "round";
+      ctx.lineWidth = cs * 0.12; ctx.strokeStyle = "rgba(0,0,0,.85)"; ctx.fillStyle = "#fff";
+      lines.forEach((l, i) => { ctx.strokeText(l, W / 2, top + i * lh); ctx.fillText(l, W / 2, top + i * lh); });
+    }
+
+    let fy = y + photoH + 32;
+    if (hasAuthor) { fy += author(P, fy, sm, c) + (bodyLines.length ? 22 : 0); }
+    if (bodyLines.length) {
+      ctx.fillStyle = c.text; ctx.font = font("500", bodySize);
+      drawLines(bodyLines, P, fy, bodySize, 1.35);
+    }
+  }
+
+  function tplResena(W, H, c, big, sm) {
+    const P = Math.round(W * 0.09), innerW = W - 2 * P;
+    let y = P;
+    if (imgs[0]) {
+      const ph = Math.round(H * 0.32);
+      photo(0, P, y, innerW, ph, c, false);
+      y += ph + 48;
+    }
+    const starSize = Math.round(76 * sm);
+    ctx.font = `400 ${starSize}px ${FONTS.sans}`;
+    ctx.textAlign = "left";
+    let sx = P;
+    for (let i = 0; i < 5; i++) {
+      ctx.fillStyle = i < S.stars ? "#f5b301" : rgba(S.text, 0.18);
+      ctx.fillText("★", sx, y);
+      sx += ctx.measureText("★").width + 6;
+    }
+    y += starSize * 1.25 + 24;
+
+    const A = 84, footerY = H - P - A;
+    const maxH = footerY - 56 - y;
+    if (S.quote.trim()) {
+      const f = fit(S.quote.trim(), innerW, maxH, 78 * big, 28, "700", 1.28);
+      ctx.fillStyle = c.text; ctx.font = font("700", f.size);
+      drawLines(f.lines, P, y, f.size, 1.28);
+    }
+    ctx.fillStyle = rgba(S.text, 0.16);
+    ctx.fillRect(P, footerY - 30, innerW, 3);
+    author(P, footerY, sm, c);
+  }
+
+  function tplGrande(W, H, c, big, sm) {
+    const P = Math.round(W * 0.09), innerW = W - 2 * P;
+    const handleSize = Math.round(34 * sm);
+    let bottom = H - P;
+    if (S.handle.trim()) {
+      ctx.fillStyle = c.muted; ctx.font = font("600", handleSize); ctx.textAlign = "left";
+      ctx.fillText(S.handle, P, bottom - handleSize);
+      bottom -= handleSize + 40;
+    }
+    if (S.cta.trim()) {
+      let cs = Math.round(48 * sm);
+      ctx.font = font("800", cs);
+      while (ctx.measureText(S.cta).width + 96 > innerW && cs > 22) { cs -= 2; ctx.font = font("800", cs); }
+      const bw = ctx.measureText(S.cta).width + 96, bh = cs * 1.2 + 60;
+      rr(P, bottom - bh, bw, bh, bh / 2);
+      ctx.fillStyle = S.accent; ctx.fill();
+      ctx.fillStyle = onColor(S.accent); ctx.textAlign = "left";
+      ctx.fillText(S.cta, P + 48, bottom - bh + 30 + cs * 0.1);
+      bottom -= bh + 56;
+    }
+    const top = P, availH = bottom - top;
+    const hasPhoto = !!imgs[0];
+    const subSize = Math.round(50 * sm);
+    let subLines = [];
+    if (S.sub.trim()) { ctx.font = font("500", subSize); subLines = wrap(S.sub, innerW); }
+    const subH = subLines.length * subSize * 1.35;
+    const bar = 12 + 36;
+    const headMax = hasPhoto ? availH * 0.36 : availH - subH - bar - 40;
+    let head = { size: 0, lines: [] };
+    if (S.headline.trim()) head = fit(S.headline, innerW, Math.max(headMax, 80), 132 * big, 32, "800", 1.08);
+    const headH = head.lines.length * head.size * 1.08;
+    let y = top;
+    if (!hasPhoto) y = top + Math.max((availH - (bar + headH + (subH ? 40 + subH : 0))) / 2, 0);
+
+    rr(P, y, 96, 12, 6); ctx.fillStyle = S.accent; ctx.fill();
+    y += bar;
+    if (head.lines.length) {
+      ctx.fillStyle = c.text; ctx.font = font("800", head.size);
+      drawLines(head.lines, P, y, head.size, 1.08);
+      y += headH;
+    }
+    if (subLines.length) {
+      y += 36;
+      ctx.fillStyle = rgba(S.text, 0.78); ctx.font = font("500", subSize);
+      drawLines(subLines, P, y, subSize, 1.35);
+      y += subH;
+    }
+    if (hasPhoto) {
+      const py = y + 40, ph = bottom - py;
+      if (ph > 160) photo(0, P, py, innerW, ph, c, false);
+    }
+  }
+
+  // ---------- render ----------
+  function render() {
+    const [W, H] = SIZES[S.size] || SIZES["4:5"];
+    canvas.width = W; canvas.height = H;
+    ctx.textBaseline = "top";
+    ctx.fillStyle = S.bg; ctx.fillRect(0, 0, W, H);
+    const c = { text: S.text, accent: S.accent, muted: rgba(S.text, 0.55) };
+    const big = S.scaleBig / 100, sm = S.scaleSmall / 100;
+    if (S.template === "resena") tplResena(W, H, c, big, sm);
+    else if (S.template === "grande") tplGrande(W, H, c, big, sm);
+    else tplFoto(W, H, c, big, sm);
+    $("#meta").textContent = `${W} × ${H} px · se descarga a este tamaño`;
+    syncVisibility();
+  }
+
+  function syncVisibility() {
+    $$("[data-t]").forEach((el) => { el.hidden = !el.dataset.t.split(" ").includes(S.template); });
+    const slots = S.template === "foto" ? S.count : 1;
+    $$("[data-slot]").forEach((el) => { el.hidden = Number(el.dataset.slot) >= slots; });
+    $$("[data-clear]").forEach((b) => {
+      const k = b.dataset.clear;
+      b.hidden = k === "avatar" ? !avatar : !imgs[Number(k)];
+    });
+    $$("[data-seg]").forEach((g) => $$("button", g).forEach((b) => b.setAttribute("aria-pressed", String(S[g.dataset.seg]) === b.dataset.v)));
+  }
+
+  let queued = false;
+  function redraw() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; render(); });
+  }
+  function save() {
+    try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) { /* sin almacenamiento */ }
+  }
+
+  // ---------- controles ----------
+  function syncInputs() {
+    $$("[data-k]").forEach((el) => { el.value = S[el.dataset.k]; });
+  }
+  $$("[data-k]").forEach((el) => {
+    el.addEventListener("input", () => {
+      const k = el.dataset.k;
+      S[k] = el.type === "range" ? Number(el.value) : el.value;
+      // "usuario", "detalle" y "firma" comparten el mismo dato
+      if (k === "handle") $$('[data-k="handle"]').forEach((o) => { if (o !== el) o.value = S.handle; });
+      save(); redraw();
+    });
+  });
+  $$("[data-seg]").forEach((g) => g.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const k = g.dataset.seg;
+    S[k] = k === "count" ? Number(b.dataset.v) : b.dataset.v;
+    save(); redraw();
+  }));
+  $$("[data-photo]").forEach((input) => input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    const img = new Image();
+    img.onload = () => {
+      if (input.dataset.photo === "avatar") avatar = img; else imgs[Number(input.dataset.photo)] = img;
+      redraw();
+    };
+    img.src = URL.createObjectURL(file);
+  }));
+  $$("[data-clear]").forEach((b) => b.addEventListener("click", () => {
+    const k = b.dataset.clear;
+    if (k === "avatar") avatar = null; else imgs[Number(k)] = null;
+    const input = $(`[data-photo="${k}"]`);
+    if (input) input.value = "";
+    redraw();
+  }));
+
+  const pal = $("#palettes");
+  PALETTES.forEach((p) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = `<i style="background:linear-gradient(135deg, ${p.bg} 50%, ${p.accent} 50%)"></i>${p.name}`;
+    b.addEventListener("click", () => {
+      Object.assign(S, { bg: p.bg, text: p.text, accent: p.accent });
+      syncInputs(); save(); redraw();
+    });
+    pal.appendChild(b);
+  });
+
+  $("#download").addEventListener("click", () => {
+    render();
+    const name = (S.fname || "posteo").replace(/[\\/:*?"<>|]+/g, "-").trim() || "posteo";
+    canvas.toBlob((blob) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = name + ".png";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    }, "image/png");
+  });
+  $("#reset").addEventListener("click", () => {
+    S = { ...DEFAULTS };
+    try { localStorage.removeItem(STORE); } catch (e) { /* sin almacenamiento */ }
+    syncInputs(); redraw();
+  });
+
+  syncInputs();
+  render();
+})();
+</script>
+</body>
+</html>

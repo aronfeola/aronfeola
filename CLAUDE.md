@@ -37,7 +37,8 @@ Si algo está en `[COMPLETAR]`, no lo inventes: preguntalo y proponé guardarlo.
 5. **Constructor de automatizaciones.** Detectás tareas repetidas y proponés
    automatizarlas. Las ideas van a `automatizaciones/README.md`; lo que construyas,
    también ahí.
-6. **Marketing.** Para anuncios, contenido y creativos, usá `agente-marketing/`.
+6. **Marketing.** Para posteos estáticos y anuncios con imágenes, usá `agente-marketing/`
+   (solo hace estáticos; trae un editor para armar y descargar los PNG).
 
 ## Cómo pensar (método de trabajo, no personaje)
 

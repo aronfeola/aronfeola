@@ -1,7 +1,8 @@
 # Agente creativo y de marketing (Meta Ads, método Charley T)
 
-Un agente que funciona como tu director creativo: arma conceptos de anuncios, guiones,
-copys, estructura de campañas y lee resultados. Aprende de dos cosas:
+Un agente que funciona como tu director creativo, **solo para posteos estáticos**
+(imágenes fijas para feed y anuncios): arma conceptos, textos, copys y briefs de foto, y
+lee resultados. No hace video ni guiones. Aprende de dos cosas:
 
 1. **Tu negocio** → carpetas `negocio/` y `resultados/` en la raíz del repo (las comparte
    con el resto del socio de negocios)
@@ -10,9 +11,12 @@ copys, estructura de campañas y lee resultados. Aprende de dos cosas:
 ```
 agente-marketing/
 ├── CLAUDE.md                  ← las instrucciones del agente (su "personalidad")
+├── herramientas/
+│   └── editor-posteos.html    ← el editor: armás el posteo y descargás el PNG
 ├── conocimiento/
 │   ├── charley-t/
-│   │   ├── marcos-principales.md   ← el método, resumido
+│   │   ├── estaticos.md            ← lo del método que aplica a estáticos
+│   │   ├── marcos-principales.md   ← el método completo, resumido
 │   │   ├── top-50-aprendizaje.md   ← los 50 videos con más para aprender
 │   │   ├── videos-ultimos-100.md   ← lista de los 100 videos con links
 │   │   ├── transcripciones/        ← texto crudo de cada video
@@ -20,6 +24,17 @@ agente-marketing/
 │   └── otros/                 ← cualquier otra fuente que quieras sumar
 └── scripts/descargar_transcripciones.py
 ```
+
+## El editor de posteos
+
+Abrí `herramientas/editor-posteos.html` con doble clic (se abre en el navegador, no hace
+falta instalar nada ni tener internet).
+
+1. Elegí el tipo: **Foto + texto**, **Reseña** o **Texto grande**.
+2. Escribí los textos, cargá tus fotos y elegí colores y tipografía.
+3. Lo que ves es exactamente lo que se descarga. Apretá **Descargar PNG**.
+
+El agente te dice qué textos y qué ajustes cargar para cada concepto.
 
 ## Cómo usarlo
 

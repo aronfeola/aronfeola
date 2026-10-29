@@ -11,7 +11,8 @@ plan/plan-de-negocio.md   ← estrategia y la cuenta de los US$1.200
 objetivos/tablero.md      ← meta del mes, objetivos por semana, registro diario
 investigaciones/          ← todo lo que Claude investiga
 automatizaciones/         ← cotizador y lista de automatizaciones
-agente-marketing/         ← agente de Meta Ads (método Charley T, 99 videos)
+agente-marketing/         ← agente de posteos estáticos para Meta Ads (método Charley T, 99 videos)
+                            y el editor de posteos (herramientas/editor-posteos.html)
 resultados/               ← resultados de anuncios
 ```
 
