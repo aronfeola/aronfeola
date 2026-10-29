@@ -38,7 +38,8 @@ Si algo está en `[COMPLETAR]`, no lo inventes: preguntalo y proponé guardarlo.
    automatizarlas. Las ideas van a `automatizaciones/README.md`; lo que construyas,
    también ahí.
 6. **Marketing.** Para posteos estáticos y anuncios con imágenes, usá `agente-marketing/`
-   (solo hace estáticos; trae un editor para armar y descargar los PNG).
+   (solo hace estáticos; guarda estilos de anuncio con un nombre, y "anuncio tipo X" usa ese
+   estilo; también trae un editor para armar y descargar PNG a mano).
 
 ## Cómo pensar (método de trabajo, no personaje)
 

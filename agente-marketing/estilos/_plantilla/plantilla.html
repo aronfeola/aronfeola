@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Plantilla de estilo</title>
+<style>
+  /* 1) TIPOGRAFÍAS: pegá acá lo que imprime  python scripts/bajar_fuente.py "Familia" 400 700
+     @font-face { font-family: 'Anton'; font-weight: 400; font-style: normal; src: url('../_fuentes/Anton-400.ttf'); } */
+
+  /* 2) VARIABLES: todo lo que cambia entre anuncios del mismo estilo vive acá.
+     --w y --h los pone render_anuncio.js (tamaño de la referencia, o --ratio). */
+  :root {
+    --w: 1080px; --h: 1350px;
+    --color-fondo: #ffffff;
+    --color-texto: #111111;
+    --color-acento: #e8590c;
+    --fuente-titulo: 'Inter', system-ui, sans-serif;
+    --fuente-cuerpo: 'Inter', system-ui, sans-serif;
+    --margen: 76px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--color-fondo); }
+
+  /* 3) DISTRIBUCIÓN: medidas en px sobre el ancho de la referencia. */
+  #lienzo { position: relative; width: var(--w); height: var(--h); padding: var(--margen); display: flex; flex-direction: column; gap: 40px; }
+
+  /* data-fit: la letra se achica sola si el texto no entra en la caja (la caja necesita alto fijo). */
+  [data-texto="titular"] {
+    font: 800 96px/1.05 var(--fuente-titulo); color: var(--color-texto);
+    height: 300px; overflow: hidden;
+  }
+  .resaltado { color: var(--color-acento); }          /* **palabra** en el texto */
+  [data-texto="subtitulo"] { font: 500 40px/1.3 var(--fuente-cuerpo); color: var(--color-texto); }
+  [data-foto="producto"] {
+    flex: 1; border-radius: 28px; background: #ddd center / cover no-repeat;
+  }
+  [data-texto="cta"] {
+    align-self: flex-start; font: 800 44px/1 var(--fuente-cuerpo);
+    background: var(--color-acento); color: #fff; padding: 30px 48px; border-radius: 999px;
+  }
+
+  /* Variantes de proporción: body[data-ratio="1x1"] ... (opcional) */
+</style>
+</head>
+<body>
+  <div id="lienzo">
+    <div data-texto="titular" data-fit>Titular de ejemplo</div>
+    <div data-texto="subtitulo" data-opcional>Subtítulo de ejemplo</div>
+    <div data-foto="producto" data-opcional></div>
+    <div data-texto="cta" data-opcional>Botón de ejemplo</div>
+  </div>
+</body>
+</html>

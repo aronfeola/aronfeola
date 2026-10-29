@@ -1,0 +1,17 @@
+{
+  "nombre": "_ejemplo",
+  "descripcion": "Oscuro y de alto impacto: titular amarillo en mayúsculas condensadas, foto con esquinas redondeadas, sello circular y botón de ancho completo. (Estilo de PRUEBA, con un anuncio inventado.)",
+  "referencia": "referencia.png",
+  "lienzo": { "ancho": 1080, "alto": 1350, "relacion": "4:5" },
+  "colores": { "fondo": "#101012", "acento": "#ffd400", "texto": "#f2f0ea", "sobre_acento": "#101012" },
+  "tipografia": {
+    "titulo": { "familia": "Anton", "peso": 400, "mayusculas": true, "tamano_px": 148, "interlineado": 0.95, "espaciado_letras_px": 1, "alineacion": "izquierda", "color": "acento" },
+    "cuerpo": { "familia": "Inter", "peso": 500, "tamano_px": 38, "interlineado": 1.3, "color": "texto" },
+    "sello": { "familia": "Inter", "peso": 800, "tamano_px": 40, "mayusculas": true },
+    "boton": { "familia": "Anton", "peso": 400, "tamano_px": 56, "mayusculas": true, "espaciado_letras_px": 2 }
+  },
+  "margenes_px": { "izquierda": 72, "derecha": 72, "arriba": 64, "abajo": 68 },
+  "fotos": { "esquinas_px": 36, "borde": null, "sombra": null, "filtro": null },
+  "elementos": ["titular (2 líneas)", "foto producto", "sello circular superpuesto arriba a la derecha", "subtítulo (1 línea)", "botón de ancho completo"],
+  "texto_en_la_imagen": { "largo_titular": "2 líneas, 2 a 4 palabras cada una", "idioma": "es-AR", "tono": "directo, de oferta", "emojis": false }
+}

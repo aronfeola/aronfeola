@@ -11,6 +11,8 @@ lee resultados. No hace video ni guiones. Aprende de dos cosas:
 ```
 agente-marketing/
 ├── CLAUDE.md                  ← las instrucciones del agente (su "personalidad")
+├── estilos/                   ← los estilos de anuncio guardados (ver estilos/README.md)
+├── anuncios/                  ← los anuncios que se generan con esos estilos
 ├── herramientas/
 │   └── editor-posteos.html    ← el editor: armás el posteo y descargás el PNG
 ├── conocimiento/
@@ -22,8 +24,22 @@ agente-marketing/
 │   │   ├── transcripciones/        ← texto crudo de cada video
 │   │   └── resumenes/              ← un resumen por video
 │   └── otros/                 ← cualquier otra fuente que quieras sumar
-└── scripts/descargar_transcripciones.py
+└── scripts/                   ← analizar_anuncio, ajustar_fuente, bajar_fuente, render_anuncio,
+                                  comparar y descargar_transcripciones
 ```
+
+## Guardar un estilo y usarlo
+
+Pasale a Claude un anuncio que te guste y un nombre:
+
+> "Analizá este anuncio y guardalo como **estilo oro**."
+
+Claude le saca la tipografía, los tamaños, los colores, la distribución, el tratamiento de las
+fotos y la forma de escribir, y lo replica hasta que quede igual al original. Después:
+
+> "Hacé un anuncio tipo **oro** para [producto]."
+
+Lo arma con ese estilo y te deja el PNG en `anuncios/`. Detalles en `estilos/README.md`.
 
 ## El editor de posteos
 

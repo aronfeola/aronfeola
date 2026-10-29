@@ -1,0 +1,16 @@
+{
+  "nombre": "NOMBRE-DEL-ESTILO",
+  "descripcion": "Una línea: cómo se ve y para qué sirve.",
+  "referencia": "referencia.png",
+  "lienzo": { "ancho": 1080, "alto": 1350, "relacion": "4:5" },
+  "colores": { "fondo": "#ffffff", "texto": "#111111", "acento": "#e8590c" },
+  "tipografia": {
+    "titulo": { "familia": "Inter", "peso": 800, "mayusculas": false, "tamano_px": 96, "interlineado": 1.05, "espaciado_letras_em": 0, "alineacion": "izquierda" },
+    "cuerpo": { "familia": "Inter", "peso": 500, "tamano_px": 40, "interlineado": 1.3 },
+    "boton":  { "familia": "Inter", "peso": 800, "tamano_px": 44 }
+  },
+  "margenes_px": { "todos": 76 },
+  "fotos": { "esquinas_px": 28, "borde": null, "sombra": null, "filtro": null },
+  "elementos": ["titular", "subtitulo", "foto producto", "boton"],
+  "texto_en_la_imagen": { "largo_titular": "3 a 8 palabras", "idioma": "es-AR", "tono": "directo", "emojis": false }
+}

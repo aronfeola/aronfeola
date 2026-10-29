@@ -29,6 +29,8 @@ resultados/               ← resultados de anuncios
 - "Vendí 3 llaveros a $X a Juan por Instagram" → lo anota en ventas y en el tablero.
 - "Hoy contacté a 8 personas, 2 respondieron" → actualiza el avance.
 - "Investigá cómo trabaja [persona] con [tema]".
+- "Analizá este anuncio y guardalo como **estilo oro**" (adjuntá la imagen).
+- "Hacé un anuncio tipo **oro** para el llavero con logo."
 - "Armame la oferta corporativa con lo que tengo".
 - "Construí la automatización n.º 3".
 - "Revisemos la semana".
