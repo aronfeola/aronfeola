@@ -1,9 +1,10 @@
-"""Descarga las transcripciones de los videos listados en conocimiento/charley-t/videos.csv.
+"""Descarga las transcripciones de los videos listados en un CSV de conocimiento/charley-t/.
 
 Correlo en TU computadora (desde un servidor en la nube YouTube lo bloquea):
 
     pip install --upgrade youtube-transcript-api
-    python scripts/descargar_transcripciones.py
+    python scripts/descargar_transcripciones.py                  # los 50 con más aprendizaje
+    python scripts/descargar_transcripciones.py videos.csv       # los últimos 100
 
 Guarda un .txt por video en conocimiento/charley-t/transcripciones/ y saltea los que ya
 existen, así que si se corta lo podés volver a correr.
@@ -37,12 +38,13 @@ def descargar_texto(video_id):
 
 def main():
     SALIDA.mkdir(exist_ok=True)
-    with open(BASE / "videos.csv", encoding="utf-8") as f:
+    lista = sys.argv[1] if len(sys.argv) > 1 else "videos-top50.csv"
+    with open(BASE / lista, encoding="utf-8") as f:
         videos = list(csv.DictReader(f))
 
     errores_seguidos = 0
     for video in videos:
-        destino = SALIDA / f"{int(video['n']):03d}-{video['id']}.txt"
+        destino = SALIDA / f"{video['id']}.txt"
         if destino.exists():
             continue
         try:

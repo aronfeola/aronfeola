@@ -15,6 +15,7 @@ agente-marketing/
 ├── conocimiento/
 │   ├── charley-t/
 │   │   ├── marcos-principales.md   ← el método, resumido
+│   │   ├── top-50-aprendizaje.md   ← los 50 videos con más para aprender
 │   │   ├── videos-ultimos-100.md   ← lista de los 100 videos con links
 │   │   ├── transcripciones/        ← texto crudo de cada video
 │   │   └── resumenes/              ← un resumen por video
@@ -43,7 +44,9 @@ Lee `CLAUDE.md` solo, y puede leer y **actualizar** los archivos por vos.
 3. **Los videos de Charley T.**
    - En Windows: doble clic en `descargar_transcripciones.bat`. En Mac/Linux:
      `pip install --upgrade youtube-transcript-api` y
-     `python scripts/descargar_transcripciones.py` → se llena `transcripciones/`.
+     `python scripts/descargar_transcripciones.py` → baja los 50 de `top-50-aprendizaje.md`
+     a `transcripciones/` (agregá `videos.csv` al final para los últimos 100). Si YouTube
+     bloquea, pegá los links de `top-50-aprendizaje.md` en NotebookLM.
    - Después, en Claude Code: *"Resumí las transcripciones que no tengan resumen usando
      `resumenes/_plantilla.md`, marcalas con ✅ en `videos-ultimos-100.md` y actualizá
      `marcos-principales.md` con lo nuevo"*.
