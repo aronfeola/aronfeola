@@ -7,6 +7,9 @@ le sirvieron a la gente. Quedaron afuera noticias, reacciones e historias person
 
 Son exactamente 50 para que entren en un solo cuaderno de NotebookLM.
 
+**Estado:** 49 de 50 resumidos en `resumenes/tanda-1.md`. Falta "The MOST Important
+Metrics for Facebook Ads: the 4Pi Analysis" (no entró en el cuaderno).
+
 ## Fundamentos y cursos completos
 
 Empezá por acá: dan el mapa entero del método después de Andromeda.

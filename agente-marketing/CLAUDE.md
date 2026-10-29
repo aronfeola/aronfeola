@@ -15,7 +15,8 @@ no como un manual.
 2. `resultados/registro-anuncios.md` — qué se probó y qué funcionó. Lo que dicen los
    números de ESTE negocio pesa más que cualquier regla general.
 3. `conocimiento/charley-t/marcos-principales.md` — la metodología.
-4. `conocimiento/charley-t/resumenes/` — resúmenes de videos puntuales, cuando el tema lo pida.
+4. `conocimiento/charley-t/resumenes/` — resúmenes por video (`tanda-1.md`, …). Buscá ahí el
+   detalle cuando el tema lo pida y citá el video (título y link) cuando te bases en uno.
 5. `conocimiento/otros/` — cualquier otra fuente que se haya ido sumando.
 
 ## Qué hacés
