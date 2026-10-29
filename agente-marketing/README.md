@@ -3,15 +3,13 @@
 Un agente que funciona como tu director creativo: arma conceptos de anuncios, guiones,
 copys, estructura de campañas y lee resultados. Aprende de dos cosas:
 
-1. **Tu negocio** → carpeta `negocio/` y `resultados/`
+1. **Tu negocio** → carpetas `negocio/` y `resultados/` en la raíz del repo (las comparte
+   con el resto del socio de negocios)
 2. **El método** → carpeta `conocimiento/` (arranca con Charley T / @ctthedisrupter)
 
 ```
 agente-marketing/
 ├── CLAUDE.md                  ← las instrucciones del agente (su "personalidad")
-├── negocio/                   ← marca, cliente ideal, oferta, competencia
-├── resultados/
-│   └── registro-anuncios.md   ← qué probaste y qué funcionó
 ├── conocimiento/
 │   ├── charley-t/
 │   │   ├── marcos-principales.md   ← el método, resumido
@@ -27,7 +25,7 @@ agente-marketing/
 
 **Opción A — Proyecto en claude.ai (lo más fácil).**
 Creá un Proyecto, pegá el contenido de `CLAUDE.md` en "Instrucciones" y subí como
-archivos del proyecto todo lo de `negocio/`, `resultados/` y `conocimiento/`.
+archivos del proyecto todo lo de `../negocio/`, `../resultados/` y `conocimiento/`.
 Cada chat dentro de ese proyecto ya es el agente.
 
 **Opción B — Claude Code.** Abrí Claude Code dentro de la carpeta `agente-marketing/`.
@@ -36,10 +34,10 @@ Lee `CLAUDE.md` solo, y puede leer y **actualizar** los archivos por vos.
 ## Cómo ir rellenándolo de información
 
 1. **Primero, tu negocio (lo más importante).** Completá los `[COMPLETAR]` de
-   `negocio/`. Si no sabés por dónde empezar, decile al agente:
+   `../negocio/`. Si no sabés por dónde empezar, decile al agente:
    *"Entrevistame para completar marca.md y cliente-ideal.md"*.
 2. **Cada semana, tus resultados.** Agregá una fila a
-   `resultados/registro-anuncios.md`, o pegale las métricas al agente y pedile que
+   `../resultados/registro-anuncios.md`, o pegale las métricas al agente y pedile que
    escriba la fila. Esto es lo que más lo mejora con el tiempo.
 3. **Los videos de Charley T.**
    - En Windows: doble clic en `descargar_transcripciones.bat`. En Mac/Linux:

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cotizador 3D</title>
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --text: #1d1d1b;
+    --muted: #6b6a66;
+    --line: #e3e1db;
+    --accent: #c4511f;
+    --accent-soft: #fbe9e1;
+    --good: #2f7a4a;
+    --bad: #b3261e;
+    --input: #fbfaf8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614;
+      --card: #1f1f1d;
+      --text: #ecebe7;
+      --muted: #a09e98;
+      --line: #34332f;
+      --accent: #f07a45;
+      --accent-soft: #3a2419;
+      --good: #6cc48d;
+      --bad: #f2867f;
+      --input: #262623;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --card: #1f1f1d; --text: #ecebe7; --muted: #a09e98; --line: #34332f;
+    --accent: #f07a45; --accent-soft: #3a2419; --good: #6cc48d; --bad: #f2867f; --input: #262623;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px;
+  }
+  h2 { font-size: 1.05rem; margin: 0 0 4px; }
+  .hint { color: var(--muted); font-size: .85rem; margin: 0 0 14px; }
+  .fields { display: grid; gap: 10px 14px; grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr)); }
+  label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); }
+  input, select {
+    font: inherit; color: var(--text); background: var(--input);
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%;
+  }
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .wide { grid-column: 1 / -1; }
+  .banner {
+    background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: .9rem;
+  }
+  .result { grid-column: 1 / -1; }
+  .big { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .stat {
+    flex: 1 1 180px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+  }
+  .stat .k { font-size: .8rem; color: var(--muted); }
+  .stat .v { font-size: 1.45rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .stat .v small { font-size: .85rem; font-weight: 400; color: var(--muted); }
+  .stat.main { border-color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-size: .8rem; color: var(--muted); font-weight: 500; }
+  .scroll { overflow-x: auto; }
+  .neg { color: var(--bad); }
+  .pos { color: var(--good); }
+  .warn { color: var(--bad); font-size: .9rem; margin: 8px 0 0; }
+  textarea {
+    width: 100%; min-height: 150px; font: inherit; color: var(--text); background: var(--input);
+    border: 1px solid var(--line); border-radius: 8px; padding: 10px;
+  }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  button {
+    font: inherit; border: 0; border-radius: 8px; padding: 9px 16px; cursor: pointer;
+    background: var(--accent); color: #fff; font-weight: 600;
+  }
+  button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); font-weight: 500; }
+  .ok { color: var(--good); font-size: .9rem; }
+  h3 { font-size: .95rem; margin: 18px 0 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Cotizador de impresión 3D</h1>
+  <p class="sub">Costo real, precio sugerido, precios por cantidad y el texto del presupuesto listo para mandar.</p>
+
+  <div class="banner" id="banner">
+    Los costos de abajo son <strong>de ejemplo</strong>. Cargá los tuyos (de <code>negocio/costos.md</code>):
+    quedan guardados en este navegador.
+  </div>
+
+  <div class="grid">
+    <section>
+      <h2>Tus costos fijos</h2>
+      <p class="hint">Se cargan una vez. Todos en pesos.</p>
+      <div class="fields">
+        <label>Filamento ($ por kg)<input data-cfg id="filKg" type="number" min="0" step="any" value="20000"></label>
+        <label>Luz ($ por kWh)<input data-cfg id="kwh" type="number" min="0" step="any" value="150"></label>
+        <label>Consumo de la impresora (W)<input data-cfg id="watts" type="number" min="0" step="any" value="120"></label>
+        <label>Precio de la impresora ($)<input data-cfg id="printerPrice" type="number" min="0" step="any" value="800000"></label>
+        <label>Vida útil de la impresora (horas)<input data-cfg id="printerLife" type="number" min="1" step="any" value="5000"></label>
+        <label>Mantenimiento (% sobre la máquina)<input data-cfg id="maint" type="number" min="0" step="any" value="10"></label>
+        <label>Fallas y reimpresiones (%)<input data-cfg id="fail" type="number" min="0" step="any" value="10"></label>
+        <label>Tu hora de trabajo ($)<input data-cfg id="hourRate" type="number" min="0" step="any" value="5000"></label>
+        <label>Tipo de cambio ($ por US$1)<input data-cfg id="fx" type="number" min="0" step="any" value="1400"></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>El trabajo</h2>
+      <p class="hint">Gramos y horas los da el laminador (slicer), por unidad.</p>
+      <div class="fields">
+        <label class="wide">Producto<input data-job id="product" type="text" value="Llavero con logo"></label>
+        <label>Gramos por unidad<input data-job id="grams" type="number" min="0" step="any" value="8"></label>
+        <label>Horas de impresión por unidad<input data-job id="hours" type="number" min="0" step="any" value="0.25"></label>
+        <label>Trabajo manual por unidad (min)<input data-job id="manualMin" type="number" min="0" step="any" value="3"><span>Post-procesado, armado, empaque</span></label>
+        <label>Insumos y packaging por unidad ($)<input data-job id="extras" type="number" min="0" step="any" value="150"></label>
+        <label>Diseño o preparación, una vez por pedido (min)<input data-job id="setupMin" type="number" min="0" step="any" value="60"></label>
+        <label>Cantidad<input data-job id="qty" type="number" min="1" step="1" value="100"></label>
+        <label>Ganancia buscada (% del precio)<input data-job id="margin" type="number" min="0" max="95" step="any" value="50"></label>
+        <label>Comisión de la plataforma (%)<select data-job id="fee">
+          <option value="0">Sin comisión (transferencia, efectivo)</option>
+          <option value="6">Mercado Pago (~6%)</option>
+          <option value="15">Mercado Libre (~15%)</option>
+        </select></label>
+        <label>Plazo de entrega<input data-job id="leadTime" type="text" value="10 días hábiles"></label>
+      </div>
+    </section>
+
+    <section class="result">
+      <h2>Resultado</h2>
+      <div class="big">
+        <div class="stat main"><div class="k">Precio sugerido por unidad</div><div class="v" id="outPrice">—</div></div>
+        <div class="stat"><div class="k">Total del pedido</div><div class="v" id="outTotal">—</div></div>
+        <div class="stat"><div class="k">Ganancia limpia del pedido</div><div class="v" id="outProfit">—</div></div>
+        <div class="stat"><div class="k">Horas de impresora</div><div class="v" id="outHours">—</div></div>
+      </div>
+      <p class="warn" id="warn" hidden></p>
+
+      <h3>De dónde sale el costo (por unidad)</h3>
+      <div class="scroll"><table>
+        <thead><tr><th>Concepto</th><th>$</th><th>% del precio</th></tr></thead>
+        <tbody id="breakdown"></tbody>
+      </table></div>
+
+      <h3>Precios por cantidad</h3>
+      <p class="hint">El diseño o preparación se reparte entre las unidades, por eso el precio baja con la cantidad sin perder margen.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Cantidad</th><th>Precio por unidad</th><th>Total</th><th>Ganancia limpia</th><th>Horas de impresora</th></tr></thead>
+        <tbody id="tiers"></tbody>
+      </table></div>
+
+      <h3>Presupuesto para WhatsApp</h3>
+      <textarea id="quote" readonly></textarea>
+      <div class="row">
+        <button id="copy">Copiar presupuesto</button>
+        <button class="ghost" id="reset">Volver a los costos de ejemplo</button>
+        <span class="ok" id="copied" hidden>Copiado</span>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  const STORAGE_KEY = "cotizador3d.costos";
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => {
+    const v = parseFloat($(id).value);
+    return Number.isFinite(v) ? v : 0;
+  };
+  const ars = (v) => "$" + Math.round(v).toLocaleString("es-AR");
+  const usd = (v) => "US$" + v.toLocaleString("es-AR", { maximumFractionDigits: Math.abs(v) < 100 ? 2 : 0 });
+  const pct = (v) => (v * 100).toLocaleString("es-AR", { maximumFractionDigits: 1 }) + "%";
+  const cfgInputs = [...document.querySelectorAll("[data-cfg]")];
+  const defaults = Object.fromEntries(cfgInputs.map((el) => [el.id, el.value]));
+
+  function loadConfig() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (!saved) return;
+      for (const el of cfgInputs) if (saved[el.id] !== undefined) el.value = saved[el.id];
+      $("banner").hidden = true;
+    } catch (e) { /* sin almacenamiento: se usan los valores de ejemplo */ }
+  }
+
+  function saveConfig() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Object.fromEntries(cfgInputs.map((el) => [el.id, el.value]))));
+      $("banner").hidden = true;
+    } catch (e) { /* sin almacenamiento */ }
+  }
+
+  // Costo de UNA unidad cuando el pedido es de `qty` unidades.
+  function unitCost(qty) {
+    const grams = num("grams"), hours = num("hours");
+    const material = grams / 1000 * num("filKg");
+    const power = hours * num("watts") / 1000 * num("kwh");
+    const machine = hours * num("printerPrice") / Math.max(num("printerLife"), 1) * (1 + num("maint") / 100);
+    const failFactor = 1 + num("fail") / 100;
+    const printing = (material + power + machine) * failFactor;
+    const manual = num("manualMin") / 60 * num("hourRate");
+    const setup = num("setupMin") / 60 * num("hourRate") / Math.max(qty, 1);
+    const extras = num("extras");
+    return {
+      material: material * failFactor, power: power * failFactor, machine: machine * failFactor,
+      manual, setup, extras, total: printing + manual + setup + extras,
+      // Lo que sale de tu bolsillo: no incluye tu tiempo (tu hora es parte de lo que ganás).
+      outOfPocket: printing + extras,
+    };
+  }
+
+  function priceFor(cost) {
+    const margin = num("margin") / 100, fee = num("fee") / 100;
+    const denom = 1 - margin - fee;
+    return denom > 0 ? cost.total / denom : NaN;
+  }
+
+  function render() {
+    const qty = Math.max(Math.round(num("qty")), 1);
+    const fee = num("fee") / 100, fx = num("fx");
+    const cost = unitCost(qty);
+    const price = priceFor(cost);
+    const warn = $("warn");
+
+    if (!Number.isFinite(price)) {
+      warn.hidden = false;
+      warn.textContent = "La ganancia buscada más la comisión llegan al 100% o más: bajá alguna de las dos.";
+      return;
+    }
+    warn.hidden = true;
+
+    const profitUnit = price * (1 - fee) - cost.outOfPocket;
+    const total = price * qty;
+    const profit = profitUnit * qty;
+    const toUsd = (v) => (fx > 0 ? ` <small>${usd(v / fx)}</small>` : "");
+
+    $("outPrice").innerHTML = ars(price) + toUsd(price);
+    $("outTotal").innerHTML = ars(total) + toUsd(total);
+    $("outProfit").innerHTML = `<span class="${profit >= 0 ? "pos" : "neg"}">${ars(profit)}</span>` + toUsd(profit);
+    $("outHours").textContent = (num("hours") * qty).toLocaleString("es-AR", { maximumFractionDigits: 1 }) + " h";
+
+    const rows = [
+      ["Filamento (con fallas)", cost.material],
+      ["Luz (con fallas)", cost.power],
+      ["Desgaste de la máquina (con fallas)", cost.machine],
+      ["Insumos y packaging", cost.extras],
+      ["Tu trabajo manual", cost.manual],
+      ["Diseño o preparación (repartido)", cost.setup],
+      ["Comisión de la plataforma", price * fee],
+      ["Ganancia buscada", price * num("margin") / 100],
+    ];
+    $("breakdown").innerHTML = rows
+      .map(([k, v]) => `<tr><td>${k}</td><td>${ars(v)}</td><td>${pct(v / price)}</td></tr>`)
+      .join("") + `<tr><td><strong>Precio</strong></td><td><strong>${ars(price)}</strong></td><td>100%</td></tr>`;
+
+    const tierQtys = [...new Set([1, 10, 50, 100, 250, qty])].sort((a, b) => a - b);
+    $("tiers").innerHTML = tierQtys.map((q) => {
+      const c = unitCost(q), p = priceFor(c), pr = (p * (1 - fee) - c.outOfPocket) * q;
+      const mark = q === qty ? " <strong>←</strong>" : "";
+      return `<tr><td>${q.toLocaleString("es-AR")}${mark}</td><td>${ars(p)}</td><td>${ars(p * q)}</td>` +
+        `<td class="${pr >= 0 ? "pos" : "neg"}">${ars(pr)}</td><td>${(num("hours") * q).toLocaleString("es-AR", { maximumFractionDigits: 1 })} h</td></tr>`;
+    }).join("");
+
+    $("quote").value = [
+      `Presupuesto: ${$("product").value || "Impresión 3D"}`,
+      ``,
+      `Cantidad: ${qty.toLocaleString("es-AR")} unidades`,
+      `Precio por unidad: ${ars(price)}`,
+      `Total: ${ars(total)}`,
+      `Plazo de entrega: ${$("leadTime").value || "a confirmar"}`,
+      ``,
+      `Para confirmar: seña del 50%. Antes de producir te mandamos una muestra o render para que lo apruebes.`,
+      `Si alguna pieza sale con fallas, la reponemos sin costo.`,
+      `Presupuesto válido por 7 días.`,
+    ].join("\n");
+  }
+
+  document.addEventListener("input", (e) => {
+    if (e.target.matches("[data-cfg]")) saveConfig();
+    render();
+  });
+  document.addEventListener("change", render);
+
+  $("copy").addEventListener("click", async () => {
+    const text = $("quote").value;
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) { $("quote").select(); document.execCommand("copy"); }
+    $("copied").hidden = false;
+    setTimeout(() => ($("copied").hidden = true), 1800);
+  });
+
+  $("reset").addEventListener("click", () => {
+    for (const el of cfgInputs) el.value = defaults[el.id];
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* sin almacenamiento */ }
+    $("banner").hidden = false;
+    render();
+  });
+
+  loadConfig();
+  render();
+</script>
+</body>
+</html>
