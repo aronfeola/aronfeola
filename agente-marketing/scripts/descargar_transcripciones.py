@@ -19,7 +19,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 BASE = Path(__file__).resolve().parent.parent / "conocimiento" / "charley-t"
 SALIDA = BASE / "transcripciones"
 IDIOMAS = ["en", "en-US", "en-GB"]
-PAUSA_SEGUNDOS = 3
+PAUSA_SEGUNDOS = 10  # ir despacio: si se piden muchos seguidos, YouTube bloquea por unas horas
 MAXIMO_ERRORES_SEGUIDOS = 3
 
 # La consola de Windows a veces no puede mostrar ✓ / ✗.
@@ -54,6 +54,7 @@ def main():
                 print("\nFallaron varios seguidos, así que paro. Mandá este error completo:\n")
                 print(f"{type(error).__name__}: {error}")
                 return
+            time.sleep(PAUSA_SEGUNDOS)
             continue
         errores_seguidos = 0
         destino.write_text(f"# {video['titulo']}\n{video['url']}\n\n{texto}\n", encoding="utf-8")
