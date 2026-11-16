@@ -1,0 +1,55 @@
+{
+ "rectangular_A_1termo_1mate_1yerbero": {
+  "bbox_mm": [
+   214.0,
+   208.2,
+   83.2
+  ],
+  "printed_g": 699,
+  "rail_z": 45.2,
+  "logo_x": [
+   -87.0,
+   -12.2
+  ]
+ },
+ "rectangular_B_2termos_1mate_1yerbero": {
+  "bbox_mm": [
+   219.5,
+   226.2,
+   72.8
+  ],
+  "printed_g": 692,
+  "rail_z": 34.8,
+  "logo_x": [
+   -89.8,
+   -15.0
+  ]
+ },
+ "redondeado_A_1termo_1mate_1yerbero": {
+  "bbox_mm": [
+   214.0,
+   208.2,
+   83.2
+  ],
+  "printed_g": 675,
+  "rail_z": 45.2,
+  "logo_x": [
+   -59.0,
+   15.8
+  ]
+ },
+ "redondeado_B_2termos_1mate_1yerbero": {
+  "bbox_mm": [
+   219.5,
+   226.2,
+   72.8
+  ],
+  "printed_g": 671,
+  "rail_z": 34.8,
+  "logo_x": [
+   -61.8,
+   13.0
+  ]
+ },
+ "gancho_each_g": 34
+}
