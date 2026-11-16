@@ -1,0 +1,34 @@
+{
+ "gancho_v3_imprimir_x2": {
+  "bbox_mm": [
+   130.0,
+   69.7,
+   30.0
+  ],
+  "printed_g": 34
+ },
+ "tapa_mate": {
+  "bbox_mm": [
+   92.0,
+   91.1,
+   9.0
+  ],
+  "printed_g": 25
+ },
+ "adaptador_termo_chico": {
+  "bbox_mm": [
+   94.2,
+   94.2,
+   60.0
+  ],
+  "printed_g": 101
+ },
+ "tope_riel_imprimir_x4": {
+  "bbox_mm": [
+   12.0,
+   5.1,
+   22.8
+  ],
+  "printed_g": 1
+ }
+}
