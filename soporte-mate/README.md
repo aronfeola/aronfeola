@@ -27,7 +27,7 @@ Todos los bolsillos tienen agujero de desagote de 8 mm en el fondo.
 
 - Pared exterior: 3.5 mm, con acanalado vertical de 1 mm (mínimo 2.5 mm en el fondo del canal).
 - Tabiques entre bolsillos: 3 a 4 mm. Piso: 4 mm. Placa trasera con riel: 12 mm.
-- Cuerpo A: 212 × 217 × 119 mm. Cuerpo B: 226 × 224 × 119 mm. Ambos entran en cama de 256 × 256.
+- Cuerpo A: 213 × 206 × 119 mm. Cuerpo B: 219 × 224 × 119 mm. Caja rectangular maciza con esquinas redondeadas; los huecos se cortan desde arriba (el slicer rellena el bloque al 20 %). Ambos entran en cama de 256 × 256.
 
 ## Cómo imprimir (Bambu P2S / X1 / P1, boquilla 0.4)
 
@@ -47,17 +47,17 @@ Todos los bolsillos tienen agujero de desagote de 8 mm en el fondo.
 
 | | Modelo A (1 termo) | Modelo B (2 termos) |
 |---|---|---|
-| Filamento cuerpo | ~1.025 kg | ~1.340 kg |
+| Filamento cuerpo | ~1.60 kg | ~1.78 kg |
 | Filamento 2 ganchos | ~55 g | ~55 g |
-| **Filamento total** | **~1.08 kg** | **~1.40 kg** |
-| Material (ARS 22.000 a 36.000 el kg) | ARS 24.000 a 39.000 | ARS 31.000 a 50.000 |
-| Luz + margen de fallas (15 %) | ARS 4.000 a 6.000 | ARS 5.000 a 8.000 |
-| **Costo total haciéndolo vos** | **ARS 28.000 a 45.000** | **ARS 36.000 a 58.000** |
-| Precio aproximado en un servicio de impresión | ARS 80.000 a 130.000 | ARS 110.000 a 170.000 |
-| Tiempo en Bambu P2S / X1 (0.2 mm) | 27 a 31 h | 35 a 40 h |
-| Tiempo en impresora lenta (Ender 3) | 65 a 80 h | 85 a 100 h |
+| **Filamento total** | **~1.65 kg** | **~1.85 kg** |
+| Material (ARS 22.000 a 36.000 el kg) | ARS 36.000 a 60.000 | ARS 41.000 a 67.000 |
+| Luz + margen de fallas (15 %) | ARS 6.000 a 9.000 | ARS 7.000 a 10.000 |
+| **Costo total haciéndolo vos** | **ARS 42.000 a 69.000** | **ARS 48.000 a 77.000** |
+| Precio aproximado en un servicio de impresión | ARS 120.000 a 180.000 | ARS 140.000 a 210.000 |
+| Tiempo en Bambu P2S / X1 (0.2 mm) | 38 a 44 h | 43 a 50 h |
+| Tiempo en impresora lenta (Ender 3) | 95 a 115 h | 110 a 130 h |
 
-Peso cargado aproximado: Modelo A 2.5 kg, Modelo B 3.8 kg. Para el B conviene agregar una correa
+Peso cargado aproximado: Modelo A 3.1 kg, Modelo B 4.3 kg. Para el B conviene agregar una correa
 inferior al asiento para que no se hamaque al frenar.
 
 ## Variante más liviana

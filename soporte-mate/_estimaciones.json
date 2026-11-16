@@ -1,0 +1,32 @@
+{
+ "modelo_A_1termo_1mate_1yerbero": {
+  "bbox_mm": [
+   213.0,
+   206.0,
+   119.0
+  ],
+  "solid_cm3": 3081.5,
+  "printed_g": 1603,
+  "faces": 6984,
+  "rail_z": 81.0
+ },
+ "modelo_B_2termos_1mate_1yerbero": {
+  "bbox_mm": [
+   218.5,
+   224.0,
+   119.0
+  ],
+  "solid_cm3": 2854.4,
+  "printed_g": 1779,
+  "faces": 7974,
+  "rail_z": 81.0
+ },
+ "gancho": {
+  "bbox_mm": [
+   130.0,
+   67.2,
+   25.0
+  ],
+  "printed_g_each": 27
+ }
+}
