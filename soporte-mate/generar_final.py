@@ -19,6 +19,7 @@ WALL, FLOOR = 4.0, 5.0
 CLEAT_D, CLEAT_H, CLEAT_TOP = 8.8, 24.0, 14.0      # profundidad, alto de la cuña y material por encima
 PLATE_BACK = 12.0
 LOGO_RELIEF = 0.8
+FLUTES = False                                       # exterior liso
 DENS = 1.27                                          # PETG g/cm3
 
 def prism_yz(pts, W):
@@ -61,7 +62,7 @@ def build_box(pockets, bombilla):
         c = m3.Manifold.cylinder(H - 6.0, FLUTE_R, FLUTE_R, 20).translate(
             [pt.x + nrm[0]*(FLUTE_R - FLUTE_DEPTH), pt.y + nrm[1]*(FLUTE_R - FLUTE_DEPTH), 3.0])
         flutes = c if flutes is None else flutes + c
-    body = body - flutes
+    if FLUTES: body = body - flutes
     for shp, dep in zip(shapes, depths):
         body = body - extrude(shp, dep + 5, H - dep)
         c = shp.centroid
@@ -76,7 +77,7 @@ def build_box(pockets, bombilla):
     body = body + extrude(lg, LOGO_RELIEF + 0.6, 0).rotate([90, 0, 0]).translate([0, y1 + LOGO_RELIEF, 0])
     return body.translate([-(x0 + x1)/2, -(y0 + y1)/2, 0]), H
 
-HW, HT, HL, ARM, GUS = 40.0, 18.0, 130.0, 46.0, 26.0
+HW, HT, HL, ARM, GUS = 40.0, 18.0, 130.0, 46.0, 16.0   # GUS <= ARM-HT-10.5 para no tapar el poste
 def foot_pts(clear_d, h):
     Df = CLEAT_D - clear_d
     return [(0.5, 0), (-Df, 0), (-Df, h), (0.5, h - Df - 0.5)]
@@ -85,16 +86,17 @@ def hanger():
     strap = m3.Manifold.cube([HW, HT, HL]).translate([-HW/2, 0, 0])
     arm = m3.Manifold.cube([HW, ARM, HT]).translate([-HW/2, 0, HL - HT])
     gus = prism_yz([(HT, HL - HT), (HT, HL - HT - GUS), (HT + GUS, HL - HT)], HW)
-    head = m3.Manifold.cube([HW, HW, HT]).translate([-HW/2, ARM - HW/2, HL - HT]) - cyl(8.5, HT + 2, 0, ARM, HL - HT - 1, 72)
+    head = m3.Manifold.cube([HW, HW, HT]).translate([-HW/2, ARM - HW/2, HL - HT])
     foot = prism_yz(foot_pts(0.5, CLEAT_H - 1.2), HW)
-    return strap + arm + gus + head + foot
+    hole = cyl(8.5, HT + 2, 0, ARM, HL - HT - 1, 72)     # se resta al final: el brazo no debe tapar el agujero
+    return strap + arm + gus + head + foot - hole
 
 def as_printed(man):
     h = man.rotate([0, 90, 0]); bb = h.bounding_box()
     return h.translate([-bb[0], -bb[1], -bb[2]])
 
 def tope():
-    return as_printed(prism_yz(foot_pts(0.15, CLEAT_H - 0.3), 12.0))
+    return as_printed(prism_yz(foot_pts(0.25, CLEAT_H - 0.4), 12.0))
 
 if __name__ == "__main__":
     K = 0.68
